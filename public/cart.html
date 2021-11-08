@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #main{
+        width: 90%;
+        margin: auto;
+        grid-template-columns: 70%;
+        grid-gap: 10px;
+    }
+</style>
+<body>
+    <div id="main">
+        <div id="data"></div>
+    </div>
+</body>
+</html>
+<script>
+
+
+    let data = document.getElementById("data");
+    let cart = JSON.parse(localStorage.getItem("cart"));
+    console.log(cart);
+
+
+    // let getData = document.getElementById("getData");
+
+    function appendFood(cart) {
+        data.innerHTML = null;
+        cart.forEach((el) => {
+            console.log("ele",cart);
+            let div = document.createElement("div");
+            let img = document.createElement("img");
+            img.src = el.strCategoryThumb;
+            let p = document.createElement("p");
+            p.innerHTML = "Name:- " + el.strCategory;
+            div.append(img, p);
+            data.append(div);
+            
+        })
+    }
+    appendFood(cart);
+
+    
+</script>
+<script>
+    setInterval(function(){ alert("wait your order is prepared"); }, 1000);
+    setInterval(function(){ alert("your order is parsal"); }, 10000);
+</script>

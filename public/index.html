@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online food order</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    #getData {
+        width: 98%;
+        display: grid;
+        grid-template-columns: 22% 22% 22% 22%;
+        grid-gap: 10px;
+    }
+
+    #getData div {
+        border: 1px solid black;
+        padding-left: 40px;
+        padding-bottom: 5px;
+    }
+
+    #getData img {
+        width: 200px;
+        height: 200px;
+    }
+
+    #getData button {
+        border: 2px solid black;
+    }
+</style>
+
+<body>
+    <div class="w-full bg-gray-600 h-12">
+        <h1 class="mx-8 py-2 text-xl font-bold text-white inline-block">Food</h1>
+        <div class="lg:flex float-right mx-10 text-white">
+            <a href="#" class="hover:bg-red-600 mx-3 my-1 px-2 py-2 rounded">Menu</a>
+            <a href="cart.html" class="hover:bg-red-600 mx-3 my-1  px-2 py-2 rounded">Cart</a>
+            <a href="sign.html" class="hover:bg-red-600 mx-3 my-1  px-2 py-2 rounded" id="update">Signup/Login</a>
+        </div>
+    </div>
+    <div id="getData" class="w-11/12  my-5 mx-20"></div>
+</body>
+
+</html>
+<script>
+
+    async function menu() {
+        let res = await fetch("https://www.themealdb.com/api/json/v1/1/categories.php");
+        let data = await res.json();
+        console.log(data);
+        appendFood(data.categories);
+    }
+    menu();
+
+    let getData = document.getElementById("getData");
+
+    function appendFood(data) {
+        getData.innerHTML = null;
+        data.forEach((el) => {
+            // console.log("ele",el)
+            let div = document.createElement("div");
+            let img = document.createElement("img");
+            img.src = el.strCategoryThumb;
+            let p = document.createElement("p");
+            p.innerHTML = "Name:- " + el.strCategory;
+            let btn = document.createElement("button");
+            btn.innerText = "Add to cart";
+            btn.onclick = function () {
+                addtocart(el);
+            }
+            div.append(img, p, btn);
+            getData.append(div);
+        })
+    }
+
+    if (localStorage.getItem("cart") == null) {
+        localStorage.setItem("cart", JSON.stringify([]));
+    }
+
+
+    function addtocart(p) {
+        let data = JSON.parse(localStorage.getItem("cart"));
+        data.push(p);
+        localStorage.setItem("cart", JSON.stringify(data));
+    }
+
+    let update = document.getElementById("update");
+    let d = JSON.parse(localStorage.getItem("loginData"));
+    d.forEach((el) => {
+        update.innerText = null;
+        if (el.username === undefined) {
+            update.innerText = "Signup/Login";
+        } else {
+            update.innerText = el.username;
+        }
+    });
+</script>
